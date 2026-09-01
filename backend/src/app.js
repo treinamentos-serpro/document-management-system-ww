@@ -8,7 +8,7 @@
 //   - repositories/ (persistência: arquivos locais + metadados em memória)
 //
 // Restrição do projeto: uploads são gravados no filesystem local da aplicação
-// usando multer com diskStorage. Não utilize provedores externos.
+// usando multer com diskStorage. Não utilize provedores externos..
 
 const express = require('express');
 const documentRoutes = require('./routes/documentRoutes');
