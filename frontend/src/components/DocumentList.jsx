@@ -10,7 +10,7 @@ function formatSize(bytes) {
 
 export default function DocumentList({ documents }) {
   if (documents.length === 0) {
-    return <p>Nenhum documento enviado ainda.</p>;
+    return <p>Nenhum documento enviado ainda</p>;
   }
 
   return (
