@@ -11,10 +11,15 @@
 // usando multer com diskStorage. Não utilize provedores externos..
 
 const express = require('express');
+const multer = require('multer');
 const documentRoutes = require('./routes/documentRoutes');
+const { ensureStorageDir } = require('./config/storage');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Garante que o diretório de storage existe antes de qualquer operação.
+ensureStorageDir();
 
 app.use(express.json());
 
@@ -24,6 +29,24 @@ app.get('/health', (req, res) => {
 });
 
 app.use(documentRoutes);
+
+// Handler de erro centralizado: evita vazar detalhes internos ao cliente.
+app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({ mensagem: 'Falha no upload: ' + err.message });
+  }
+
+  if (err.statusCode) {
+    return res.status(err.statusCode).json({ mensagem: err.message });
+  }
+
+  console.error(err);
+  return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+});
 
 if (require.main === module) {
   app.listen(PORT, () => {

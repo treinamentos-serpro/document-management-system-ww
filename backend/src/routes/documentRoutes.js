@@ -4,8 +4,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const documentController = require('../controllers/documentController');
-
-const STORAGE_DIR = path.join(__dirname, '..', '..', 'storage');
+const { STORAGE_DIR } = require('../config/storage');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
